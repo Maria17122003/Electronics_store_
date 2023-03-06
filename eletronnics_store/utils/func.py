@@ -17,6 +17,12 @@ class ProductPresentaion:
         self.number_of_product = number_of_product
         self.all_product.append(self)
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}('{self.__name_product}', '{self.price_product}', {self.number_of_product})"
+
+    def __str__(self):
+        return f'{self.__name_product}'
+
     @property
     def name_product(self) -> str:
         return self.__name_product
