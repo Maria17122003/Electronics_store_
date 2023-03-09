@@ -78,3 +78,39 @@ class ProductPresentaion:
         if isinstance(num, int) or isinstance(num, float) and num % 1 == 0:
             return True
         return False
+
+
+class Phone(ProductPresentaion):
+    def __init__(self, name_product, price_product, number_of_product, sim_cards):
+        """
+        Создаем новый атрибут
+        количество сим карт
+        """
+        super().__init__(name_product, price_product, number_of_product)
+        self.sim_cards = sim_cards
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}('{self.name_product}', '{self.price_product}', " \
+               f"{self.number_of_product}, {self.__sim_cards})"
+
+    def __str__(self):
+        return f'{self.name_product}'
+
+    def __add__(self, other):
+        """
+        Складывает количество
+        товаров в магазине
+        """
+        if not isinstance(other, ProductPresentaion):
+            raise ValueError('Складывать можно только объекты ProductPresentaion и Phone.')
+        return int(self.number_of_product) + int(other.number_of_product)
+
+    @property
+    def sim_cards(self) -> int:
+        return self.__sim_cards
+
+    @sim_cards.setter
+    def sim_cards(self, sim_cards):
+        if sim_cards < 0 and isinstance(sim_cards, int):
+            raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+        self.__sim_cards = sim_cards
