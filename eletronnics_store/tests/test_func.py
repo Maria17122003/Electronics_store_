@@ -1,5 +1,5 @@
 import pytest
-from eletronnics_store.utils.func import ProductPresentaion
+from eletronnics_store.utils.func import ProductPresentaion, Phone
 
 
 @pytest.fixture()
@@ -17,6 +17,12 @@ def file():
 @pytest.fixture()
 def name():
     return ProductPresentaion.all_product
+
+
+@pytest.fixture()
+def phone():
+    phone = Phone('iPhone 14', 120000, 5, 2)
+    return phone
 
 
 def test_name_product(name):
@@ -65,17 +71,37 @@ def test_is_integer():
     assert ProductPresentaion.is_integer(5.5) is False
 
 
-def test_repr(item):
+def test_repr(item, phone):
     """
     Тест
     __repr__
     """
     assert item.__repr__() == "ProductPresentaion('Смартфон', '10000', 20)"
+    assert phone.__repr__() == "Phone('iPhone 14', '120000', 5, 2)"
 
 
-def test_str(item):
+def test_str(item, phone):
     """
     Тест
     __str__
     """
     assert str(item) == "Смартфон"
+    assert str(phone) == 'iPhone 14'
+
+
+def test_add(item, phone):
+    """
+    Тест
+    __add__
+    """
+    assert phone + item == 25
+
+
+def test_sim_cards(phone):
+    """
+    Тест
+    sim_cards
+    """
+    phone.sim_cards = 0
+    with pytest.raises(Exception):
+        phone.sim_cards = "Количество физических SIM-карт должно быть целым числом больше нуля."
