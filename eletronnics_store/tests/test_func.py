@@ -95,6 +95,8 @@ def test_add(item, phone):
     __add__
     """
     assert phone + item == 25
+    with pytest.raises(ValueError, match='Складывать можно только объекты ProductPresentaion и Phone.'):
+        phone + "10000"
 
 
 def test_sim_cards(phone):
