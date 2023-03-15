@@ -114,3 +114,43 @@ class Phone(ProductPresentaion):
         if sim_cards < 0 and isinstance(sim_cards, int):
             raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
         self.__sim_cards = sim_cards
+
+
+class MixinLog:
+    """
+    Класс
+    MixinLog,
+    который дополняет
+    KeyBoard
+    """
+
+    def __init__(self, language):
+        super().__init__()
+        self._language = language
+
+    @property
+    def language(self):
+        return self._language
+
+    @language.setter
+    def language(self, language):
+        if language != "EN" or language != "RU":
+            raise AttributeError("property 'language' of 'KeyBoard' object has no setter")
+        self.language = language
+
+    def change_lang(self):
+        """
+        Меняет язык на
+        русский
+        """
+        self._language = "RU"
+
+
+class KeyBoard(ProductPresentaion, MixinLog):
+    def __init__(self, name_product, price_product, number_of_product, language="EN"):
+        """
+        Создаем новый атрибут
+        язык
+        """
+        super().__init__(name_product, price_product, number_of_product)
+        self._language = language
