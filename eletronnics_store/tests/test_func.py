@@ -1,5 +1,5 @@
 import pytest
-from eletronnics_store.utils.func import ProductPresentaion, Phone
+from eletronnics_store.utils.func import ProductPresentaion, Phone, KeyBoard
 
 
 @pytest.fixture()
@@ -23,6 +23,12 @@ def name():
 def phone():
     phone = Phone('iPhone 14', 120000, 5, 2)
     return phone
+
+
+@pytest.fixture()
+def keyboard():
+    keyboard = KeyBoard('Dark Project KD87A', 9600, 5)
+    return keyboard
 
 
 def test_name_product(name):
@@ -107,3 +113,15 @@ def test_sim_cards(phone):
     phone.sim_cards = 0
     with pytest.raises(Exception):
         phone.sim_cards = "Количество физических SIM-карт должно быть целым числом больше нуля."
+
+
+def test_change_lang(keyboard):
+    """
+    Тест
+    change_lang
+    """
+    assert keyboard.language == "EN"
+    keyboard.change_lang()
+    assert keyboard.language == "RU"
+    with pytest.raises(AttributeError, match="property 'language' of 'KeyBoard' object has no setter"):
+        keyboard.language = 'CH'
