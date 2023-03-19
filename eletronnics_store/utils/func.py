@@ -136,14 +136,17 @@ class MixinLog:
     def language(self, language):
         if language != "EN" or language != "RU":
             raise AttributeError("property 'language' of 'KeyBoard' object has no setter")
-        self.language = language
+        self._language = language
 
     def change_lang(self):
         """
         Меняет язык на
         русский
         """
-        self._language = "RU"
+        if self._language == "EN":
+            self._language = "RU"
+        else:
+            self._language = "EN"
 
 
 class KeyBoard(ProductPresentaion, MixinLog):
