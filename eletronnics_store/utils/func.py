@@ -1,4 +1,15 @@
 import csv
+import os.path
+
+
+class InstantiateCSVError(Exception):
+    """Класс исключение для ошибок,
+     связанных с пореждением файла"""
+    def __init__(self, *args):
+        self.message = args[0] if args else 'Файл Items.csv поврежден'
+
+    def __str__(self):
+        return self.message
 
 
 class ProductPresentaion:
@@ -57,16 +68,27 @@ class ProductPresentaion:
         Считывает данные
         из csv-файла
         и создает
-        экземпляры класса
+        экземпляры класса,
+        выбрасывает исключение если файл не найден
+        или поврежден
         """
+        if not os.path.isfile(path):
+            raise FileNotFoundError('Отсутствует файл item.csv')
+
         with open(path) as file:
-            file_csv = csv.DictReader(file)
-            for item in file_csv:
-                cls(
-                    name_product=item['name'],
-                    price_product=float(item['price']),
-                    number_of_product=int(item['quantity'])
-                )
+            try:
+                file_csv = csv.DictReader(file)
+                for item in file_csv:
+                    if list(item.keys()) == ['name', 'price', 'quantity']:
+                        cls(
+                            name_product=item['name'],
+                            price_product=float(item['price']),
+                            number_of_product=int(item['quantity'])
+                            )
+                    else:
+                        raise InstantiateCSVError
+            except InstantiateCSVError:
+                print(InstantiateCSVError('Файл item.csv поврежден'))
 
     @staticmethod
     def is_integer(num) -> bool:
@@ -131,12 +153,6 @@ class MixinLog:
     @property
     def language(self):
         return self._language
-
-    @language.setter
-    def language(self, language):
-        if language != "EN" or language != "RU":
-            raise AttributeError("property 'language' of 'KeyBoard' object has no setter")
-        self._language = language
 
     def change_lang(self):
         """
