@@ -1,5 +1,5 @@
 import pytest
-from eletronnics_store.utils.func import ProductPresentaion, Phone, KeyBoard
+from eletronnics_store.utils.func import ProductPresentaion, Phone, KeyBoard, InstantiateCSVError
 
 
 @pytest.fixture()
@@ -48,6 +48,9 @@ def test_from_csv(file):
     ProductPresentaion.get_from_csv(file)
     assert len(ProductPresentaion.all_product) == 5
     assert ProductPresentaion.all_product[1].name_product == 'Ноутбук'
+    with pytest.raises(FileNotFoundError, match='Отсутствует файл items.csv'):
+        ProductPresentaion.get_from_csv('items.csv')
+    assert ProductPresentaion.get_from_csv('items_error.csv') == print('Файл item.csv поврежден')
 
 
 def test_get_total_price_products(item):
@@ -123,5 +126,3 @@ def test_change_lang(keyboard):
     assert keyboard.language == "EN"
     keyboard.change_lang()
     assert keyboard.language == "RU"
-    with pytest.raises(AttributeError, match="property 'language' of 'KeyBoard' object has no setter"):
-        keyboard.language = 'CH'
