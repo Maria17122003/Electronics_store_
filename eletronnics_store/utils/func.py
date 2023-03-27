@@ -73,7 +73,7 @@ class ProductPresentaion:
         или поврежден
         """
         if not os.path.isfile(path):
-            raise FileNotFoundError('Отсутствует файл item.csv')
+            raise FileNotFoundError('Отсутствует файл items.csv')
 
         with open(path) as file:
             try:

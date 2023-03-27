@@ -1,5 +1,5 @@
 import pytest
-from eletronnics_store.utils.func import ProductPresentaion, Phone, KeyBoard, InstantiateCSVError
+from eletronnics_store.utils.func import ProductPresentaion, Phone, KeyBoard
 
 
 @pytest.fixture()
@@ -31,6 +31,18 @@ def keyboard():
     return keyboard
 
 
+@pytest.fixture()
+def path_not_found():
+    path_not_found = 'items.csv'
+    return path_not_found
+
+
+@pytest.fixture()
+def path_error():
+    path_error = 'items_error.csv'
+    return path_error
+
+
 def test_name_product(name):
     """
     Тест
@@ -40,7 +52,7 @@ def test_name_product(name):
         name.name_product = "Название не может быть длиннее 10 символов."
 
 
-def test_from_csv(file):
+def test_from_csv(file, path_not_found, path_error):
     """
     Тест
     from_csv
@@ -49,8 +61,8 @@ def test_from_csv(file):
     assert len(ProductPresentaion.all_product) == 5
     assert ProductPresentaion.all_product[1].name_product == 'Ноутбук'
     with pytest.raises(FileNotFoundError, match='Отсутствует файл items.csv'):
-        ProductPresentaion.get_from_csv('items.csv')
-    assert ProductPresentaion.get_from_csv('items_error.csv') == print('Файл item.csv поврежден')
+        ProductPresentaion.get_from_csv(path_not_found)
+    assert ProductPresentaion.get_from_csv(path_error) == print('Файл item.csv поврежден')
 
 
 def test_get_total_price_products(item):
